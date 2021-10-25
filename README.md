@@ -1,8 +1,8 @@
-# pstage_02_Object_Detection
+# pstage_02_Object_Segmentation
 ---
 ## Getting Started
 ---
-# MMDetection setting
+# MMSegmentation setting
 
 git clone https://github.com/boostcampaitech2/semantic-segmentation-level2-cv-08.git .
 
