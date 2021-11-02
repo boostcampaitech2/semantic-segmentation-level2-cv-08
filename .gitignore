@@ -1,3 +1,6 @@
 data
 .idea
 baseline_code
+pytorch_lightning/saved
+pytorch_lightning/submission
+pytorch_lightning/PL_Seg
