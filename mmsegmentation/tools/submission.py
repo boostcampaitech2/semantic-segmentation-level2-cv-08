@@ -62,7 +62,10 @@ def main():
         os.makedirs(os.path.dirname(args.out_logit_pkl_path), exist_ok=True)
 
         with open(args.out_logit_pkl_path, 'wb') as pkl_file:
-            pickle.dump(np.stack(logit_outputs, axis=0), pkl_file, protocol=4)  # ndarray (819, 11, 512, 512)
+            logits_to_pickle = np.stack(logit_outputs, axis=0)  # ndarray (819, 11, 512, 512)
+            logits_to_pickle = np.clip(logits_to_pickle * 255., 0., 255.)  # 혹시 몰라서 clamping
+            logits_to_pickle = logits_to_pickle.astype(np.uint8)
+            pickle.dump(logits_to_pickle, pkl_file, protocol=4)
 
     pred_outputs = [logit.argmax(axis=0) for logit in logit_outputs]
 
