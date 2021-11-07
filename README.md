@@ -104,10 +104,28 @@ pip install pytorch-segmentation-model # smp 0.2.0
 - **Output** : 모델은 bbox 좌표, 카테고리, score 값을 리턴합니다. 이를 submission 양식에 맞게 csv 파일을 만들어 제출합니다. (submission format에 대한 설명은 평가방법을 참고해주세요
 
 # 문제 정의
-
+- __시각화__
+①Class Dependency
+ - 전단지의 경우 일반 쓰레기와 종이 두 가지로 annotation되어 있음
+ - 유리와 투명 플라스틱이 매끈한 표면, 투명함 등 이미지상에서 유사한 특징을 보임
+ - 얇은 물체(노끈이나 줄 등)에 대한 background Error가 아주 높은 경향을 보임
+ - 봉투안에 담긴 물체들은 형체가 보이나 따로 annotation되어있지 않고 plastic bag으로 표기 되어있음
+② Class Imbalance 
+ - Figure 1 에서 처럼 Class 별 annotation 수의 불균형이 많이 나타남 
+ - 배터리의 경우, 데이터가 63개로 다른 class에 비해 현저히 적음. 
+④ Various Dataset Environment
+ - Figure 2 와 같이 다양한 환경에서 촬영된 이미지
 
 # 문제에 대한 실험
-
+① Data Augmentation : Class Imbalance 및 Image의 촬영 환경 보완을 위한 다양한 Augmentation 기법 시도
+→ Rotate, RandomResizedCrop, MotionBlur, GridDistortion, HueSaturationValue, RandomBrightnessContrast, ImageCompression, Hor/VerFlip
+② Model Selection : 최적의 모델을 찾기 위해 다양한 모델로 실험
+③ Generalization : 여러 Augmentation과 Noise를 넣어 시도
+④ Pseudo Labeling : 학습한 모델로 test 데이터를 inference한 후, 그 결과로 추가 학습
+⑤ CRF(Conditional Random field) : denseCRF 후처리를 통해 픽셀단위의 정확도 향상 도모
+⑥ Ensemble : 여러 모델을 Ensemble(soft or hard voting) 함으로서 Robust한 모델 개선 시도
+⑦ YohanMix : 클래스 불균형 해소를 위해 적은 개수의 클래스의 image를 기존 dataset에 CutMix와 같은 방식으로 이어붙이는 방식.
+⑧ TTA(Test Time Augmentation) : 학습 때와 다른 input image를 통해 inference 하는 방법 / Multiscale
 
 # Modeling 및 Ensemble
 
